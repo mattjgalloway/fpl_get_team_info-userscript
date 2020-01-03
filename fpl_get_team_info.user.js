@@ -3,7 +3,7 @@
 // @namespace   mattjgalloway
 // @include     https://fantasy.premierleague.com/leagues/*/standings/*
 // @run-at      document-idle
-// @version     1.0.1
+// @version     1.0.2
 // @license     GPL-3.0-or-later; http://www.gnu.org/licenses/gpl-3.0.txt
 // ==/UserScript==
 
@@ -464,11 +464,6 @@ function updateTeamRow(teamId, picksResponse, historyResponse) {
           tmpFixtureId = fixture.id;
         }
       });
-
-      if (playerData.web_name == 'Aurier') {
-        console.log(fixturesObj[tmpFixtureId]);
-        console.log(livePlayersObj[playerData.id]);
-      }
 
       if (fixturesObj[tmpFixtureId].started == true) {
         var hasPlayed = false;
