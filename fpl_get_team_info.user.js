@@ -3,11 +3,11 @@
 // @namespace   mattjgalloway
 // @include     https://fantasy.premierleague.com/leagues/*/standings/*
 // @run-at      document-idle
-// @version     1.0.0
+// @version     1.0.1
 // @license     GPL-3.0-or-later; http://www.gnu.org/licenses/gpl-3.0.txt
 // ==/UserScript==
 
-// Inspired by Nick Child's fantastic plugin: https://openuserjs.org/install/nickchild/FPL_get_team_info.user.js
+// Fork of Nick Child's fantastic plugin: https://openuserjs.org/scripts/nickchild/FPL_get_team_info
 
 var gwnum = 0;
 var playersObj = [];
