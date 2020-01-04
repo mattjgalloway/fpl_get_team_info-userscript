@@ -665,4 +665,3 @@ function startScript() {
     });
 }
 startScript();
-
