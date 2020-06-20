@@ -530,8 +530,6 @@ function updateTeamRow(teamId, picksResponse, historyResponse) {
       chipName = "Bench Boost";
     } else if (chipName == "wildcard") {
       chipName = "Wildcard";
-    } else if (chipName == "bboost") {
-      chipName = "Bench Boost";
     } else if (chipName == "3xc") {
       chipName = "Triple Captain";
     } else if (chipName == "fhit" || chipName == "freehit") {
@@ -665,3 +663,4 @@ function startScript() {
     });
 }
 startScript();
+
