@@ -3,7 +3,7 @@
 // @namespace   mattjgalloway
 // @include     https://fantasy.premierleague.com/leagues/*/standings/*
 // @run-at      document-idle
-// @version     1.0.2
+// @version     1.0.3
 // @license     GPL-3.0-or-later; http://www.gnu.org/licenses/gpl-3.0.txt
 // ==/UserScript==
 
