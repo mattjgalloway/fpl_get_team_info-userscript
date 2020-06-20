@@ -404,6 +404,56 @@ function getData() {
 }
 
 function updateTeamRow(teamId, picksResponse, historyResponse) {
+  let entryObj = JSON.parse(historyResponse.responseText);
+  let chipsObj = entryObj.chips;
+  let info = entryObj.current;
+
+  var totalTransfers = 0, value = 0, bank = 0;
+  for (i = 0; i < info.length; i++) {
+    totalTransfers += info[i].event_transfers;
+    value = info[i].value / 10;
+    bank = info[i].bank / 10;
+  }
+  let totalValue = Math.round((value + bank) * 10) / 10;
+
+  let chipCount = chipsObj.length;
+  var chipStr = "";
+  var chipActive = false;
+
+  var wildcard1Used = 0;
+  var wildcard2Used = 0;
+  var benchBoostActive = false;
+  chipsObj.forEach(function(chip) {
+    if (chip.event == gwnum) {
+      chipActive = true
+    }
+
+    var chipName = chip.name;
+    if (chipName == "bboost") {
+      chipName = "Bench Boost";
+      benchBoostActive = chipActive;
+    } else if (chipName == "wildcard") {
+      chipName = "Wildcard";
+    } else if (chipName == "3xc") {
+      chipName = "Triple Captain";
+    } else if (chipName == "fhit" || chipName == "freehit") {
+      chipName = "Free Hit";
+    }
+
+    if (chipStr != "") {
+      chipStr += "\n";
+    }
+    chipStr += chipName + " (GW" + chip.event + ")";
+
+    if (chip.name == "wildcard") {
+      if (chip.event <= 20) {
+        wildcard1Used = chip.event;
+      } else {
+        wildcard2Used = chip.event;
+      }
+    }
+  });
+
   let teamObj = JSON.parse(picksResponse.responseText);
 
   let gwTransfers = teamObj.entry_history.event_transfers;
@@ -427,7 +477,7 @@ function updateTeamRow(teamId, picksResponse, historyResponse) {
   picks.forEach(function(pick) {
     let playerData = playersObj[pick.element];
 
-    if (pick.position < 12) {
+    if (benchBoostActive || pick.position < 12) {
       liveScore = liveScore + playerData.event_points * pick.multiplier;
       if (startingStr != "") {
         startingStr += ", ";
@@ -456,7 +506,7 @@ function updateTeamRow(teamId, picksResponse, historyResponse) {
       isViceCaptain = true;
     }
 
-    if (pick.position < 12) {
+    if (benchBoostActive || pick.position < 12) {
       let tmpPlayerTeamId = playerData.team;
       var tmpFixtureId = 0;
       Object.values(fixturesObj).forEach(function(fixture) {
@@ -501,54 +551,6 @@ function updateTeamRow(teamId, picksResponse, historyResponse) {
   let currentPoints = teamObj.entry_history.total_points;
   let weekPoints = teamObj.entry_history.points;
   let liveTotal = (currentPoints - weekPoints) + liveScore;
-
-  let entryObj = JSON.parse(historyResponse.responseText);
-  let chipsObj = entryObj.chips;
-  let info = entryObj.current;
-
-  var totalTransfers = 0, value = 0, bank = 0;
-  for (i = 0; i < info.length; i++) {
-    totalTransfers += info[i].event_transfers;
-    value = info[i].value / 10;
-    bank = info[i].bank / 10;
-  }
-  let totalValue = Math.round((value + bank) * 10) / 10;
-
-  let chipCount = chipsObj.length;
-  var chipStr = "";
-  var chipActive = false;
-
-  var wildcard1Used = 0;
-  var wildcard2Used = 0;
-  chipsObj.forEach(function(chip) {
-    if (chip.event == gwnum) {
-      chipActive = true
-    }
-
-    var chipName = chip.name;
-    if (chipName == "bboost") {
-      chipName = "Bench Boost";
-    } else if (chipName == "wildcard") {
-      chipName = "Wildcard";
-    } else if (chipName == "3xc") {
-      chipName = "Triple Captain";
-    } else if (chipName == "fhit" || chipName == "freehit") {
-      chipName = "Free Hit";
-    }
-
-    if (chipStr != "") {
-      chipStr += "\n";
-    }
-    chipStr += chipName + " (GW" + chip.event + ")";
-
-    if (chip.name == "wildcard") {
-      if (chip.event <= 20) {
-        wildcard1Used = chip.event;
-      } else {
-        wildcard2Used = chip.event;
-      }
-    }
-  });
 
   var rowstr = "";
   if (config_values.teamval == 1) {
